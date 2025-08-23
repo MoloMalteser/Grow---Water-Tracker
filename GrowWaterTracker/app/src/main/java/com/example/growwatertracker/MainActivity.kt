@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
 		val slider = view.findViewById<Slider>(R.id.sliderAmount)
 		val textAmount = view.findViewById<TextView>(R.id.textAmount)
 		val buttonAdd = view.findViewById<MaterialButton>(R.id.buttonAdd)
+		slider.valueFrom = 50f
+		slider.valueTo = 1000f
+		slider.stepSize = 50f
 		textAmount.text = getString(R.string.sheet_amount, slider.value.toInt())
 		slider.addOnChangeListener { _, value, _ ->
 			textAmount.text = getString(R.string.sheet_amount, value.toInt())
