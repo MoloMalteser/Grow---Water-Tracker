@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="seedling">#A5D6A7</color>
+	<color name="small">#81C784</color>
+	<color name="medium">#66BB6A</color>
+	<color name="large">#43A047</color>
+	<color name="dead">#9E9E9E</color>
+
+	<color name="cardBackground">#FFFFFF</color>
+	<color name="onCard">#222222</color>
+	<color name="colorPrimary">#2E7D32</color>
+	<color name="colorOnPrimary">#FFFFFF</color>
+	<color name="colorBackground">#FAFAFA</color>
+</resources>

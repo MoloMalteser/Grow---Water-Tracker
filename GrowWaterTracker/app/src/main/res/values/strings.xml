@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Grow – Water Tracker</string>
+	<string name="plant_content_desc">Pflanze</string>
+	<string name="daily_goal_label">Tagesziel: %1$d ml</string>
+	<string name="consumed_label">Getrunken: %1$d ml</string>
+	<string name="points_label">Punkte: %1$d</string>
+
+	<string name="dialog_drink_title">Getrunkene Menge (ml)</string>
+	<string name="dialog_drink_hint">z.\u00a0B. %1$d</string>
+	<string name="dialog_drink_positive">Speichern</string>
+	<string name="dialog_invalid_amount">Bitte gib eine gültige Menge ein.</string>
+
+	<string name="dialog_dead_title">Oh nein!</string>
+	<string name="dialog_dead_message">Die Pflanze ist vertrocknet. Starte morgen neu.</string>
+</resources>
