@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+	<style name="Theme.GrowWaterTracker" parent="Theme.Material3.Light.NoActionBar">
+		<item name="android:statusBarColor" tools:targetApi="l">@color/colorPrimary</item>
+		<item name="android:navigationBarColor" tools:targetApi="o_mr1">@color/colorBackground</item>
+		<item name="android:windowBackground">@color/colorBackground</item>
+	</style>
+</resources>

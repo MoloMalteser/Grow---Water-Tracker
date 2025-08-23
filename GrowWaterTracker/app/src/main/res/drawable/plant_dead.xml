@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+	android:width="200dp"
+	android:height="200dp"
+	android:viewportWidth="100"
+	android:viewportHeight="100">
+	<path android:fillColor="#757575" android:pathData="M48,60 L52,60 L52,85 L48,85 Z"/>
+	<!-- Drooping leaf to the right -->
+	<path android:fillColor="#9E9E9E" android:pathData="M52,60 C75,65 78,80 55,85 C50,80 48,70 52,60 Z"/>
+</vector>
