@@ -6,6 +6,10 @@
 	<string name="consumed_label">Getrunken: %1$d ml</string>
 	<string name="points_label">Punkte: %1$d</string>
 
+	<string name="top_consumed">💧 %1$d ml</string>
+	<string name="top_streak">🔥 %1$d</string>
+	<string name="top_goal">🎯 %1$d ml</string>
+
 	<string name="dialog_drink_title">Getrunkene Menge (ml)</string>
 	<string name="dialog_drink_hint">z.\u00a0B. %1$d</string>
 	<string name="dialog_drink_positive">Speichern</string>
@@ -13,4 +17,12 @@
 
 	<string name="dialog_dead_title">Oh nein!</string>
 	<string name="dialog_dead_message">Die Pflanze ist vertrocknet. Starte morgen neu.</string>
+
+	<string name="sheet_title">Wasser hinzufügen</string>
+	<string name="sheet_amount">Menge: %1$d ml</string>
+	<string name="sheet_add">Hinzufügen</string>
+	<string name="nav_home">Home</string>
+	<string name="nav_history">Verlauf</string>
+	<string name="nav_scoreboard">Scoreboard</string>
+	<string name="nav_settings">Settings</string>
 </resources>
