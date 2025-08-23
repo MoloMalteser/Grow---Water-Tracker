@@ -34,6 +34,7 @@ jobs:
         uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.6
+          build-root-directory: GrowWaterTracker
           arguments: ":app:assembleRelease :app:bundleRelease"
 
       - name: Upload build artifacts
@@ -41,14 +42,14 @@ jobs:
         with:
           name: grow-water-tracker-artifacts
           path: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+            GrowWaterTracker/app/build/outputs/apk/release/*.apk
+            GrowWaterTracker/app/build/outputs/bundle/release/*.aab
 
       - name: Create GitHub Release and upload assets
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+            GrowWaterTracker/app/build/outputs/apk/release/*.apk
+            GrowWaterTracker/app/build/outputs/bundle/release/*.aab
           generate_release_notes: true
