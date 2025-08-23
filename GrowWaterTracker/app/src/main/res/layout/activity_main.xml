@@ -13,13 +13,14 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:padding="16dp"
-		android:gravity="spaceBetween"
+		android:gravity="center_vertical"
 		android:background="@android:color/transparent">
 
 		<TextView
 			android:id="@+id/textTopConsumed"
-			android:layout_width="wrap_content"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:layout_weight="1"
 			android:textColor="@color/onBeige"
 			android:textStyle="bold"
 			android:textSize="18sp"
