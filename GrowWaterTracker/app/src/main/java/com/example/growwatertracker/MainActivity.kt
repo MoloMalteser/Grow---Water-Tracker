@@ -1,4 +1,4 @@
-package com.example.growwatertracker
+package com.nostudios.grow
 
 import android.animation.ObjectAnimator
 import android.net.Uri
@@ -9,7 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.growwatertracker.databinding.ActivityMainBinding
+import com.nostudios.grow.databinding.ActivityMainBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
 import java.text.SimpleDateFormat
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
 		val photoFile = createImageFile()
 		val uri = FileProvider.getUriForFile(
 			this,
-			"com.example.growwatertracker.fileprovider",
+			"com.nostudios.grow.fileprovider",
 			photoFile
 		)
 		lastCapturedPhotoUri = uri
