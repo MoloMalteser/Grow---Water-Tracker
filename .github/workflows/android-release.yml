@@ -30,18 +30,19 @@ jobs:
           sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
           yes | sdkmanager --licenses
 
-      - name: Build Release APK and AAB
+      - name: Build APKs and AAB
         uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.6
           build-root-directory: GrowWaterTracker
-          arguments: ":app:assembleRelease :app:bundleRelease"
+          arguments: ":app:assembleDebug :app:assembleRelease :app:bundleRelease"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: grow-water-tracker-artifacts
           path: |
+            GrowWaterTracker/app/build/outputs/apk/debug/*.apk
             GrowWaterTracker/app/build/outputs/apk/release/*.apk
             GrowWaterTracker/app/build/outputs/bundle/release/*.aab
 
@@ -50,6 +51,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
+            GrowWaterTracker/app/build/outputs/apk/debug/*.apk
             GrowWaterTracker/app/build/outputs/apk/release/*.apk
             GrowWaterTracker/app/build/outputs/bundle/release/*.aab
           generate_release_notes: true
