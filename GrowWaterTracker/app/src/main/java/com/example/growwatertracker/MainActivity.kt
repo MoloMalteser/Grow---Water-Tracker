@@ -326,9 +326,6 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun evaluatePlantHealth() {
-		val previousStage = stage
-		val previousHeight = plantHeightCm
-		
 		when {
 			consumedMl > 3000 -> {
 				// Plant dies from overwatering
