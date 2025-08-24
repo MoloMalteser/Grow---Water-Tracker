@@ -305,7 +305,60 @@
 					android:text="@string/notifications_enabled"
 					android:textColor="#7F8C8D"
 					android:textSize="16sp"
-					android:layout_gravity="center_horizontal"/>
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="32dp"/>
+					
+				<!-- About Section -->
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="#E5E5E5"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Über die App"
+					android:textColor="#2C3E50"
+					android:textSize="20sp"
+					android:textStyle="bold"
+					android:layout_marginBottom="16dp"/>
+					
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Grow ist eine moderne Water Tracker App, die dich dabei unterstützt, deine täglichen Wasserziele zu erreichen. Mit dem einzigartigen Pflanzensystem wächst deine virtuelle Pflanze, wenn du deine Ziele erreichst."
+					android:textColor="#7F8C8D"
+					android:textSize="14sp"
+					android:lineSpacingExtra="4dp"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Version 3.0.0"
+					android:textColor="#7F8C8D"
+					android:textSize="14sp"
+					android:layout_marginBottom="8dp"/>
+					
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="© 2024 NoStudios"
+					android:textColor="#7F8C8D"
+					android:textSize="14sp"
+					android:layout_marginBottom="32dp"/>
+					
+				<!-- NoStudios Credit -->
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Designed & Developed with ❤️ by NoStudios"
+					android:textColor="#3498DB"
+					android:textSize="16sp"
+					android:textStyle="bold"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginTop="16dp"/>
 			</LinearLayout>
 		</ScrollView>
 

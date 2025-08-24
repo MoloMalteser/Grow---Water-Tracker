@@ -5,62 +5,62 @@
 	android:viewportWidth="100"
 	android:viewportHeight="100">
 	
-	<!-- Soil -->
+	<!-- Modern soil -->
 	<path
-		android:fillColor="#8D6E63"
-		android:pathData="M20,90 L80,90 L80,100 L20,100 Z"/>
+		android:fillColor="#8B4513"
+		android:pathData="M15,85 L85,85 L85,100 L15,100 Z"/>
 	
-	<!-- Main stem -->
+	<!-- Tall stem for medium plant -->
 	<path
-		android:fillColor="#4CAF50"
-		android:strokeColor="#388E3C"
-		android:strokeWidth="1"
-		android:pathData="M50,88 Q50,65 50,45"/>
+		android:fillColor="#228B22"
+		android:strokeColor="#006400"
+		android:strokeWidth="2.5"
+		android:pathData="M50,88 L50,45"/>
 	
 	<!-- Branch stems -->
 	<path
-		android:fillColor="#4CAF50"
-		android:strokeColor="#388E3C"
-		android:strokeWidth="0.6"
-		android:pathData="M50,65 Q40,60 35,65"/>
+		android:fillColor="#228B22"
+		android:strokeColor="#006400"
+		android:strokeWidth="1.5"
+		android:pathData="M50,65 L40,65"/>
 	<path
-		android:fillColor="#4CAF50"
-		android:strokeColor="#388E3C"
-		android:strokeWidth="0.6"
-		android:pathData="M50,65 Q60,60 65,65"/>
+		android:fillColor="#228B22"
+		android:strokeColor="#006400"
+		android:strokeWidth="1.5"
+		android:pathData="M50,65 L60,65"/>
 	
 	<!-- Large leaves -->
 	<path
-		android:fillColor="#81C784"
-		android:strokeColor="#4CAF50"
-		android:strokeWidth="0.5"
-		android:pathData="M35,65 Q25,55 20,65 Q25,75 35,65"/>
+		android:fillColor="#32CD32"
+		android:strokeColor="#228B22"
+		android:strokeWidth="1"
+		android:pathData="M40,65 Q30,55 40,65"/>
 	<path
-		android:fillColor="#81C784"
-		android:strokeColor="#4CAF50"
-		android:strokeWidth="0.5"
-		android:pathData="M65,65 Q75,55 80,65 Q75,75 65,65"/>
+		android:fillColor="#32CD32"
+		android:strokeColor="#228B22"
+		android:strokeWidth="1"
+		android:pathData="M60,65 Q70,55 60,65"/>
 	
 	<!-- Upper leaves -->
 	<path
-		android:fillColor="#66BB6A"
-		android:strokeColor="#4CAF50"
-		android:strokeWidth="0.4"
-		android:pathData="M50,50 Q40,40 50,50"/>
+		android:fillColor="#228B22"
+		android:strokeColor="#006400"
+		android:strokeWidth="0.8"
+		android:pathData="M50,50 Q40,45 50,50"/>
 	<path
-		android:fillColor="#66BB6A"
-		android:strokeColor="#4CAF50"
-		android:strokeWidth="0.4"
-		android:pathData="M50,50 Q60,40 50,50"/>
+		android:fillColor="#228B22"
+		android:strokeColor="#006400"
+		android:strokeWidth="0.8"
+		android:pathData="M50,50 Q60,45 50,50"/>
 	
-	<!-- Flower buds -->
+	<!-- Flower buds at top -->
 	<path
-		android:fillColor="#FFB74D"
+		android:fillColor="#FFD700"
 		android:pathData="M50,42 A3,2 0 1,1 50,46 A3,2 0 1,1 50,42"/>
 	<path
-		android:fillColor="#FFB74D"
+		android:fillColor="#FFD700"
 		android:pathData="M45,45 A2,1.5 0 1,1 45,46.5 A2,1.5 0 1,1 45,45"/>
 	<path
-		android:fillColor="#FFB74D"
+		android:fillColor="#FFD700"
 		android:pathData="M55,45 A2,1.5 0 1,1 55,46.5 A2,1.5 0 1,1 55,45"/>
 </vector>

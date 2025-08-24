@@ -168,7 +168,9 @@ class MainActivity : AppCompatActivity() {
 		// Check if exceeding 3.5L limit
 		if (consumedMl > 3500) {
 			Toast.makeText(this, "Das Maximum von 3.5 Litern wurde überschritten!", Toast.LENGTH_LONG).show()
-			// Plant will die at end of day, not immediately
+			// Plant dies immediately from overwatering
+			stage = -1
+			plantHeightCm = 0
 		} else {
 			// Plant only grows when goal is reached
 			if (consumedMl >= dailyGoalMl) {
