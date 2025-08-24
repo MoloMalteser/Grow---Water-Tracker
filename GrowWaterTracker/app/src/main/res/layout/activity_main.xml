@@ -319,7 +319,7 @@
 		app:tint="@color/beigeBackground"
 		app:srcCompat="@drawable/ic_bucket"
 		app:elevation="8dp"
-		app:fabSize="large" />
+		app:fabSize="normal" />
 
 	<!-- Bottom Navigation with improved design -->
 	<com.google.android.material.bottomnavigation.BottomNavigationView
