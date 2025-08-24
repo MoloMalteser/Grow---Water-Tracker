@@ -11,12 +11,9 @@
 		android:pathData="M15,85 L85,85 L85,100 L15,100 Z"/>
 	
 	<!-- Seed with modern design -->
-	<ellipse
+	<path
 		android:fillColor="#654321"
-		android:cx="50"
-		android:cy="88"
-		android:rx="4"
-		android:ry="2"/>
+		android:pathData="M46,88 A4,2 0 1,1 54,88 A4,2 0 1,1 46,88"/>
 	
 	<!-- Stem with modern styling -->
 	<path
