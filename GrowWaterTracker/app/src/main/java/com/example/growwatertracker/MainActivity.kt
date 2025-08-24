@@ -37,7 +37,13 @@ class MainActivity : AppCompatActivity() {
 		updateUi()
 
 		binding.fabBucket.setOnClickListener { showDrinkSheet() }
-		binding.bottomNav.setOnItemSelectedListener {
+		binding.bottomNav.setOnItemSelectedListener { item ->
+			when (item.itemId) {
+				R.id.nav_home -> showSection(R.id.homeContainer)
+				R.id.nav_history -> showSection(R.id.historyContainer)
+				R.id.nav_scoreboard -> showSection(R.id.scoreboardContainer)
+				R.id.nav_settings -> showSection(R.id.settingsContainer)
+			}
 			true
 		}
 	}
@@ -48,6 +54,8 @@ class MainActivity : AppCompatActivity() {
 		val slider = view.findViewById<Slider>(R.id.sliderAmount)
 		val textAmount = view.findViewById<TextView>(R.id.textAmount)
 		val buttonAdd = view.findViewById<MaterialButton>(R.id.buttonAdd)
+		val animView = view.findViewById<android.widget.ImageView>(R.id.sheetVisual)
+		(animView.drawable as? android.graphics.drawable.AnimationDrawable)?.start()
 		slider.valueFrom = 50f
 		slider.valueTo = 1000f
 		slider.stepSize = 50f
@@ -89,6 +97,13 @@ class MainActivity : AppCompatActivity() {
 		val scaleFrom = if (grow) 0.95f else 1.05f
 		ObjectAnimator.ofFloat(binding.imagePlant, "scaleX", scaleFrom, 1f).apply { duration = 250; start() }
 		ObjectAnimator.ofFloat(binding.imagePlant, "scaleY", scaleFrom, 1f).apply { duration = 250; start() }
+	}
+
+	private fun showSection(visibleId: Int) {
+		binding.homeContainer.visibility = if (visibleId == R.id.homeContainer) android.view.View.VISIBLE else android.view.View.GONE
+		binding.historyContainer.visibility = if (visibleId == R.id.historyContainer) android.view.View.VISIBLE else android.view.View.GONE
+		binding.scoreboardContainer.visibility = if (visibleId == R.id.scoreboardContainer) android.view.View.VISIBLE else android.view.View.GONE
+		binding.settingsContainer.visibility = if (visibleId == R.id.settingsContainer) android.view.View.VISIBLE else android.view.View.GONE
 	}
 
 	private fun updateUi() {

@@ -15,16 +15,13 @@
 		android:textColor="@color/onBeige"
 		android:textSize="18sp" />
 
-	<TextView
+	<ImageView
 		android:id="@+id/sheetVisual"
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:text="🚰\n\n🥤"
-		android:textSize="28sp"
-		android:paddingTop="12dp"
-		android:paddingBottom="12dp"
-		android:textColor="@color/onBeige" />
+		android:layout_gravity="center_horizontal"
+		android:src="@drawable/anim_faucet_to_glass"
+		android:contentDescription="@string/sheet_title" />
 
 	<com.google.android.material.slider.Slider
 		android:id="@+id/sliderAmount"

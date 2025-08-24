@@ -39,27 +39,86 @@
 			android:id="@+id/textTopGoal"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_marginStart="12dp"
 			android:textColor="@color/onBeige"
 			android:textStyle="bold"
 			android:textSize="18sp"
 			android:text="🎯 2000 ml" />
 	</LinearLayout>
 
-	<ImageView
-		android:id="@+id/imagePlant"
+	<FrameLayout
+		android:id="@+id/contentContainer"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_marginTop="8dp"
-		android:layout_marginBottom="8dp"
-		android:contentDescription="@string/plant_content_desc"
-		android:scaleType="fitCenter"
-		android:src="@drawable/plant_seedling"
-		app:layout_anchorGravity="top"
-		app:layout_dodgeInsetEdges="top"
-		app:layout_insetEdge="top"
-		app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-		android:layout_gravity="center"
-		android:adjustViewBounds="true" />
+		android:layout_height="match_parent"
+		android:layout_marginBottom="72dp"
+		android:layout_marginTop="8dp">
+
+		<LinearLayout
+			android:id="@+id/homeContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="top|center_horizontal"
+			android:orientation="vertical"
+			android:padding="8dp">
+
+			<ImageView
+				android:id="@+id/imagePlant"
+				android:layout_width="match_parent"
+				android:layout_height="300dp"
+				android:layout_marginTop="8dp"
+				android:layout_marginBottom="8dp"
+				android:contentDescription="@string/plant_content_desc"
+				android:scaleType="fitCenter"
+				android:src="@drawable/plant_seedling"
+				android:adjustViewBounds="true" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/historyContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:visibility="gone">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/onBeige"
+				android:textSize="18sp"
+				android:text="Verlauf kommt bald"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/scoreboardContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:visibility="gone">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/onBeige"
+				android:textSize="18sp"
+				android:text="Scoreboard kommt bald"/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/settingsContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:visibility="gone">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/onBeige"
+				android:textSize="18sp"
+				android:text="Einstellungen kommen bald"/>
+		</LinearLayout>
+
+	</FrameLayout>
 
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/fabBucket"
