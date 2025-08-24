@@ -84,13 +84,50 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun showGoalSetupDialog() {
+		val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_goal_setup, null)
+		val seekBar = dialogView.findViewById<SeekBar>(R.id.seekBarGoalSetup)
+		val textValue = dialogView.findViewById<TextView>(R.id.textGoalValue)
+		val textWarning = dialogView.findViewById<TextView>(R.id.textGoalWarning)
+		
+		seekBar.max = 3000
+		seekBar.progress = 2000
+		textValue.text = "2000 ml"
+		
+		seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+				if (fromUser) {
+					textValue.text = "$progress ml"
+					
+					// Show warning for high values
+					if (progress >= 3000) {
+						textWarning.text = "⚠️ 3 Liter ist sehr viel und wird nicht empfohlen!"
+						textWarning.visibility = android.view.View.VISIBLE
+					} else if (progress >= 2500) {
+						textWarning.text = "⚠️ Über 2.5 Liter ist bereits viel"
+						textWarning.visibility = android.view.View.VISIBLE
+					} else {
+						textWarning.visibility = android.view.View.GONE
+					}
+				}
+			}
+			override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+			override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+		})
+		
 		val dialog = AlertDialog.Builder(this)
 			.setTitle("Willkommen bei Grow! 🌱")
-			.setMessage("Wie viel Wasser möchtest du täglich trinken? (Empfohlen: 2-2.5 Liter)")
+			.setMessage("Wie viel Wasser möchtest du täglich trinken?")
+			.setView(dialogView)
 			.setPositiveButton("Bestätigen") { _, _ ->
+				dailyGoalMl = seekBar.progress
 				isFirstLaunch = false
-				prefs.edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
+				prefs.edit()
+					.putBoolean(KEY_FIRST_LAUNCH, false)
+					.putInt(KEY_GOAL, dailyGoalMl)
+					.apply()
+				updateUi()
 			}
+			.setCancelable(false)
 			.create()
 		dialog.show()
 	}
@@ -128,8 +165,7 @@ class MainActivity : AppCompatActivity() {
 		// Check if exceeding 3L limit
 		if (consumedMl > 3000) {
 			Toast.makeText(this, R.string.goal_max_exceeded, Toast.LENGTH_LONG).show()
-			stage = -1 // Plant dies
-			plantHeightCm = 0
+			// Plant will die at end of day, not immediately
 		} else {
 			// Plant only grows when goal is reached
 			if (consumedMl >= dailyGoalMl) {
@@ -140,16 +176,8 @@ class MainActivity : AppCompatActivity() {
 				}
 				points += 10
 			} else {
-				// Plant dies if goal not reached
-				if (stage > 0) {
-					stage -= 1
-					plantHeightCm = maxOf(0, plantHeightCm - 5)
-					Toast.makeText(this, R.string.plant_dying, Toast.LENGTH_SHORT).show()
-				} else if (stage == 0) {
-					stage = -1
-					plantHeightCm = 0
-				}
-				points -= 5
+				// Plant doesn't die immediately - it will be evaluated at end of day
+				points += 2 // Small points for drinking water
 			}
 		}
 		
@@ -176,19 +204,6 @@ class MainActivity : AppCompatActivity() {
 					if (progress >= 3000) {
 						showGoalWarningDialog()
 					}
-				}
-			}
-			override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-			override fun onStopTrackingTouch(seekBar: SeekBar?) {
-				saveState()
-			}
-		})
-
-		binding.seekBarGlassSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-				if (fromUser) {
-					glassTargetMl = progress
-					binding.textGlassSizeValue.text = "$progress ml"
 				}
 			}
 			override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -244,11 +259,13 @@ class MainActivity : AppCompatActivity() {
 		binding.imagePlant.setImageResource(drawableForStage(stage))
 		binding.textPlantHeight.text = getString(R.string.plant_height, plantHeightCm)
 		
-		// Update plant status
+		// Update plant status with better messages
 		binding.textPlantStatus.text = when {
 			stage == -1 -> getString(R.string.plant_dying)
 			consumedMl >= dailyGoalMl -> getString(R.string.plant_growing)
-			else -> "Ziel: ${dailyGoalMl - consumedMl} ml verbleibend"
+			consumedMl >= dailyGoalMl * 0.8 -> "Fast am Ziel! 💪"
+			consumedMl >= dailyGoalMl * 0.5 -> "Gut unterwegs! 🌱"
+			else -> "Noch ${dailyGoalMl - consumedMl} ml bis zum Ziel"
 		}
 	}
 
@@ -290,6 +307,9 @@ class MainActivity : AppCompatActivity() {
 			// Save yesterday's data
 			prefs.edit().putInt("history_$lastDay", consumedMl).apply()
 			
+			// Evaluate plant health at end of day
+			evaluatePlantHealth()
+			
 			if (consumedMl >= dailyGoalMl) {
 				streakDays += 1
 			} else {
@@ -303,6 +323,45 @@ class MainActivity : AppCompatActivity() {
 			prefs.edit().putString(KEY_DATE, today).apply()
 			saveState()
 		}
+	}
+
+	private fun evaluatePlantHealth() {
+		when {
+			consumedMl > 3000 -> {
+				// Plant dies from overwatering
+				stage = -1
+				plantHeightCm = 0
+				Toast.makeText(this, "Pflanze ist an Überwässerung gestorben! 💀", Toast.LENGTH_LONG).show()
+			}
+			consumedMl >= dailyGoalMl -> {
+				// Plant grows if goal reached
+				if (stage >= 0 && stage < 3) {
+					stage += 1
+					plantHeightCm += 10
+				}
+				Toast.makeText(this, "Pflanze ist gewachsen! 🌱", Toast.LENGTH_SHORT).show()
+			}
+			consumedMl < dailyGoalMl * 0.5 -> {
+				// Plant dies if less than 50% of goal
+				stage = -1
+				plantHeightCm = 0
+				Toast.makeText(this, "Pflanze ist vertrocknet! 💀", Toast.LENGTH_LONG).show()
+			}
+			else -> {
+				// Plant survives but doesn't grow
+				if (stage > 0) {
+					stage -= 1
+					plantHeightCm = maxOf(0, plantHeightCm - 5)
+				}
+				Toast.makeText(this, "Pflanze hat überlebt, aber nicht gewachsen", Toast.LENGTH_SHORT).show()
+			}
+		}
+		
+		// Save the evaluation result
+		prefs.edit()
+			.putInt(KEY_STAGE, stage)
+			.putInt(KEY_PLANT_HEIGHT, plantHeightCm)
+			.apply()
 	}
 
 	private fun createNotificationChannel() {
@@ -354,7 +413,6 @@ class MainActivity : AppCompatActivity() {
 			.putInt(KEY_POINTS, points)
 			.putInt(KEY_STAGE, stage)
 			.putInt(KEY_GOAL, dailyGoalMl)
-			.putInt(KEY_GLASS, glassTargetMl)
 			.putInt(KEY_STREAK, streakDays)
 			.putInt(KEY_PLANT_HEIGHT, plantHeightCm)
 			.putInt(KEY_BEST_DAY, bestDayMl)
@@ -365,7 +423,6 @@ class MainActivity : AppCompatActivity() {
 
 	private fun loadState() {
 		dailyGoalMl = prefs.getInt(KEY_GOAL, 2000)
-		glassTargetMl = prefs.getInt(KEY_GLASS, 250)
 		consumedMl = prefs.getInt(KEY_CONSUMED, 0)
 		points = prefs.getInt(KEY_POINTS, 0)
 		stage = prefs.getInt(KEY_STAGE, 0)
@@ -377,10 +434,8 @@ class MainActivity : AppCompatActivity() {
 		
 		// Update UI elements
 		binding.seekBarDailyGoal.progress = dailyGoalMl
-		binding.seekBarGlassSize.progress = glassTargetMl
 		binding.switchNotifications.isChecked = notificationsEnabled
 		binding.textDailyGoalValue.text = "$dailyGoalMl ml"
-		binding.textGlassSizeValue.text = "$glassTargetMl ml"
 		binding.textNotificationStatus.text = if (notificationsEnabled) {
 			getString(R.string.notifications_enabled)
 		} else {
@@ -425,7 +480,6 @@ class MainActivity : AppCompatActivity() {
 		private const val KEY_POINTS = "key_points"
 		private const val KEY_STAGE = "key_stage"
 		private const val KEY_GOAL = "key_goal"
-		private const val KEY_GLASS = "key_glass"
 		private const val KEY_STREAK = "key_streak"
 		private const val KEY_PLANT_HEIGHT = "key_plant_height"
 		private const val KEY_BEST_DAY = "key_best_day"
