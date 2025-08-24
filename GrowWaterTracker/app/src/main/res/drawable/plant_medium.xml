@@ -54,22 +54,13 @@
 		android:pathData="M50,50 Q60,40 50,50"/>
 	
 	<!-- Flower buds -->
-	<ellipse
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="50"
-		android:cy="42"
-		android:rx="3"
-		android:ry="2"/>
-	<ellipse
+		android:pathData="M50,42 A3,2 0 1,1 50,46 A3,2 0 1,1 50,42"/>
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="45"
-		android:cy="45"
-		android:rx="2"
-		android:ry="1.5"/>
-	<ellipse
+		android:pathData="M45,45 A2,1.5 0 1,1 45,46.5 A2,1.5 0 1,1 45,45"/>
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="55"
-		android:cy="45"
-		android:rx="2"
-		android:ry="1.5"/>
+		android:pathData="M55,45 A2,1.5 0 1,1 55,46.5 A2,1.5 0 1,1 55,45"/>
 </vector>

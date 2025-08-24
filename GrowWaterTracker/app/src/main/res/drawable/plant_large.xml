@@ -76,36 +76,21 @@
 		android:pathData="M50,40 Q55,30 50,40"/>
 	
 	<!-- Flowers -->
-	<ellipse
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="50"
-		android:cy="30"
-		android:rx="4"
-		android:ry="3"/>
-	<ellipse
+		android:pathData="M50,30 A4,3 0 1,1 50,36 A4,3 0 1,1 50,30"/>
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="45"
-		android:cy="35"
-		android:rx="3"
-		android:ry="2"/>
-	<ellipse
+		android:pathData="M45,35 A3,2 0 1,1 45,39 A3,2 0 1,1 45,35"/>
+	<path
 		android:fillColor="#FFB74D"
-		android:cx="55"
-		android:cy="35"
-		android:rx="3"
-		android:ry="2"/>
+		android:pathData="M55,35 A3,2 0 1,1 55,39 A3,2 0 1,1 55,35"/>
 	
 	<!-- Small decorative flowers -->
-	<ellipse
+	<path
 		android:fillColor="#FFCC02"
-		android:cx="40"
-		android:cy="45"
-		android:rx="2"
-		android:ry="1.5"/>
-	<ellipse
+		android:pathData="M40,45 A2,1.5 0 1,1 40,46.5 A2,1.5 0 1,1 40,45"/>
+	<path
 		android:fillColor="#FFCC02"
-		android:cx="60"
-		android:cy="45"
-		android:rx="2"
-		android:ry="1.5"/>
+		android:pathData="M60,45 A2,1.5 0 1,1 60,46.5 A2,1.5 0 1,1 60,45"/>
 </vector>
