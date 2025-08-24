@@ -3,8 +3,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:padding="24dp"
-	android:background="@color/beigeBackground">
+	android:padding="32dp"
+	android:background="@android:color/white">
 
 	<TextView
 		android:id="@+id/textGoalValue"
@@ -12,20 +12,20 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
 		android:text="2000 ml"
-		android:textSize="24sp"
+		android:textSize="32sp"
 		android:textStyle="bold"
-		android:textColor="@color/onBeige"
-		android:layout_marginBottom="16dp"/>
+		android:textColor="#2C3E50"
+		android:layout_marginBottom="24dp"/>
 
 	<SeekBar
 		android:id="@+id/seekBarGoalSetup"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="16dp"
-		android:max="3000"
-		android:progress="2000"
-		android:progressTint="@color/onBeige"
-		android:thumbTint="@color/onBeige"/>
+		android:layout_marginBottom="24dp"
+		android:max="70"
+		android:progress="40"
+		android:progressTint="#3498DB"
+		android:thumbTint="#3498DB"/>
 
 	<TextView
 		android:id="@+id/textGoalWarning"
@@ -33,16 +33,16 @@
 		android:layout_height="wrap_content"
 		android:text=""
 		android:textSize="14sp"
-		android:textColor="#FF6B6B"
+		android:textColor="#E74C3C"
 		android:gravity="center"
 		android:visibility="gone"
-		android:layout_marginTop="8dp"/>
+		android:layout_marginTop="16dp"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_marginTop="16dp">
+		android:layout_marginTop="24dp">
 
 		<TextView
 			android:layout_width="0dp"
@@ -50,16 +50,16 @@
 			android:layout_weight="1"
 			android:text="1500 ml"
 			android:textSize="12sp"
-			android:textColor="@color/onBeige"
+			android:textColor="#7F8C8D"
 			android:gravity="start"/>
 
 		<TextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="3000 ml"
+			android:text="3500 ml"
 			android:textSize="12sp"
-			android:textColor="@color/onBeige"
+			android:textColor="#7F8C8D"
 			android:gravity="end"/>
 	</LinearLayout>
 

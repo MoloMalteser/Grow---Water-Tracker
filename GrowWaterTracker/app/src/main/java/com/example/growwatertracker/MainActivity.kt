@@ -89,21 +89,23 @@ class MainActivity : AppCompatActivity() {
 		val textValue = dialogView.findViewById<TextView>(R.id.textGoalValue)
 		val textWarning = dialogView.findViewById<TextView>(R.id.textGoalWarning)
 		
-		seekBar.max = 3000
-		seekBar.progress = 2000
+		// 50ml steps: 1500ml to 3500ml (40 steps)
+		seekBar.max = 40
+		seekBar.progress = 10 // 2000ml default
 		textValue.text = "2000 ml"
 		
 		seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 				if (fromUser) {
-					textValue.text = "$progress ml"
+					val goalMl = 1500 + (progress * 50)
+					textValue.text = "$goalMl ml"
 					
 					// Show warning for high values
-					if (progress >= 3000) {
-						textWarning.text = "⚠️ 3 Liter ist sehr viel und wird nicht empfohlen!"
+					if (goalMl >= 3500) {
+						textWarning.text = "⚠️ 3.5 Liter ist sehr viel und wird nicht empfohlen!"
 						textWarning.visibility = android.view.View.VISIBLE
-					} else if (progress >= 2500) {
-						textWarning.text = "⚠️ Über 2.5 Liter ist bereits viel"
+					} else if (goalMl >= 3000) {
+						textWarning.text = "⚠️ Über 3 Liter ist bereits viel"
 						textWarning.visibility = android.view.View.VISIBLE
 					} else {
 						textWarning.visibility = android.view.View.GONE
@@ -119,7 +121,8 @@ class MainActivity : AppCompatActivity() {
 			.setMessage("Wie viel Wasser möchtest du täglich trinken?")
 			.setView(dialogView)
 			.setPositiveButton("Bestätigen") { _, _ ->
-				dailyGoalMl = seekBar.progress
+				val goalMl = 1500 + (seekBar.progress * 50)
+				dailyGoalMl = goalMl
 				isFirstLaunch = false
 				prefs.edit()
 					.putBoolean(KEY_FIRST_LAUNCH, false)
@@ -162,9 +165,9 @@ class MainActivity : AppCompatActivity() {
 	private fun applyDrink(ml: Int) {
 		consumedMl += ml
 		
-		// Check if exceeding 3L limit
-		if (consumedMl > 3000) {
-			Toast.makeText(this, R.string.goal_max_exceeded, Toast.LENGTH_LONG).show()
+		// Check if exceeding 3.5L limit
+		if (consumedMl > 3500) {
+			Toast.makeText(this, "Das Maximum von 3.5 Litern wurde überschritten!", Toast.LENGTH_LONG).show()
 			// Plant will die at end of day, not immediately
 		} else {
 			// Plant only grows when goal is reached
@@ -197,11 +200,12 @@ class MainActivity : AppCompatActivity() {
 		binding.seekBarDailyGoal.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 				if (fromUser) {
-					dailyGoalMl = progress
-					binding.textDailyGoalValue.text = "$progress ml"
+					val goalMl = 1500 + (progress * 50)
+					dailyGoalMl = goalMl
+					binding.textDailyGoalValue.text = "$goalMl ml"
 					
-					// Show warning for 3L
-					if (progress >= 3000) {
+					// Show warning for 3.5L
+					if (goalMl >= 3500) {
 						showGoalWarningDialog()
 					}
 				}
@@ -232,14 +236,14 @@ class MainActivity : AppCompatActivity() {
 	private fun showGoalWarningDialog() {
 		AlertDialog.Builder(this)
 			.setTitle(R.string.goal_warning_title)
-			.setMessage(R.string.goal_warning_message)
+			.setMessage("3.5 Liter pro Tag ist bereits viel und wird nicht empfohlen. Trotzdem fortfahren?")
 			.setPositiveButton(R.string.goal_warning_continue) { _, _ ->
-				// User confirmed, continue with 3L goal
+				// User confirmed, continue with 3.5L goal
 			}
 			.setNegativeButton(R.string.goal_warning_cancel) { _, _ ->
-				// Reset to 2.5L
-				dailyGoalMl = 2500
-				binding.seekBarDailyGoal.progress = dailyGoalMl
+				// Reset to 3L
+				dailyGoalMl = 3000
+				binding.seekBarDailyGoal.progress = 30
 				binding.textDailyGoalValue.text = "$dailyGoalMl ml"
 			}
 			.show()
@@ -327,7 +331,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun evaluatePlantHealth() {
 		when {
-			consumedMl > 3000 -> {
+			consumedMl > 3500 -> {
 				// Plant dies from overwatering
 				stage = -1
 				plantHeightCm = 0
@@ -433,7 +437,8 @@ class MainActivity : AppCompatActivity() {
 		notificationsEnabled = prefs.getBoolean(KEY_NOTIFICATIONS, true)
 		
 		// Update UI elements
-		binding.seekBarDailyGoal.progress = dailyGoalMl
+		val seekBarProgress = (dailyGoalMl - 1500) / 50
+		binding.seekBarDailyGoal.progress = seekBarProgress
 		binding.switchNotifications.isChecked = notificationsEnabled
 		binding.textDailyGoalValue.text = "$dailyGoalMl ml"
 		binding.textNotificationStatus.text = if (notificationsEnabled) {
