@@ -4,24 +4,24 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/beigeBackground"
+	android:background="#F8F9FA"
 	tools:context=".MainActivity">
 
-	<!-- Top Bar with rounded corners and shadow -->
+	<!-- Professional Top Bar with modern design -->
 	<androidx.cardview.widget.CardView
 		android:id="@+id/topBar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_margin="16dp"
-		app:cardCornerRadius="16dp"
-		app:cardElevation="4dp"
-		app:cardBackgroundColor="@color/onBeige">
+		app:cardCornerRadius="20dp"
+		app:cardElevation="8dp"
+		app:cardBackgroundColor="#FFFFFF">
 
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
-			android:padding="20dp"
+			android:padding="24dp"
 			android:gravity="center_vertical">
 
 			<TextView
@@ -29,28 +29,28 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:textColor="@color/beigeBackground"
+				android:textColor="#2C3E50"
 				android:textStyle="bold"
-				android:textSize="16sp"
+				android:textSize="18sp"
 				android:text="💧 0 ml" />
 
 			<TextView
 				android:id="@+id/textTopStreak"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="@color/beigeBackground"
+				android:textColor="#2C3E50"
 				android:textStyle="bold"
-				android:textSize="16sp"
+				android:textSize="18sp"
 				android:text="🔥 0" />
 
 			<TextView
 				android:id="@+id/textTopGoal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="12dp"
-				android:textColor="@color/beigeBackground"
+				android:layout_marginStart="16dp"
+				android:textColor="#2C3E50"
 				android:textStyle="bold"
-				android:textSize="16sp"
+				android:textSize="18sp"
 				android:text="🎯 2000 ml" />
 		</LinearLayout>
 	</androidx.cardview.widget.CardView>
@@ -60,7 +60,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginBottom="80dp"
-		android:layout_marginTop="100dp">
+		android:layout_marginTop="120dp">
 
 		<LinearLayout
 			android:id="@+id/homeContainer"
@@ -68,29 +68,29 @@
 			android:layout_height="match_parent"
 			android:gravity="top|center_horizontal"
 			android:orientation="vertical"
-			android:padding="16dp">
+			android:padding="20dp">
 
-			<!-- Plant Container with rounded background -->
+			<!-- Professional Plant Container -->
 			<androidx.cardview.widget.CardView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_margin="8dp"
-				app:cardCornerRadius="20dp"
-				app:cardElevation="8dp"
-				app:cardBackgroundColor="@android:color/white">
+				app:cardCornerRadius="24dp"
+				app:cardElevation="12dp"
+				app:cardBackgroundColor="#FFFFFF">
 
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:padding="16dp">
+					android:padding="24dp">
 
 					<ImageView
 						android:id="@+id/imagePlant"
 						android:layout_width="match_parent"
-						android:layout_height="280dp"
+						android:layout_height="300dp"
 						android:layout_marginTop="8dp"
-						android:layout_marginBottom="8dp"
+						android:layout_marginBottom="16dp"
 						android:contentDescription="@string/plant_content_desc"
 						android:scaleType="fitCenter"
 						android:src="@drawable/plant_seedling"
@@ -101,9 +101,9 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_horizontal"
-						android:textColor="@color/onBeige"
+						android:textColor="#2C3E50"
 						android:textStyle="bold"
-						android:textSize="18sp"
+						android:textSize="20sp"
 						android:text="@string/plant_height"
 						android:layout_marginTop="8dp" />
 						
@@ -112,9 +112,9 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center_horizontal"
-						android:textColor="@color/onBeige"
+						android:textColor="#7F8C8D"
 						android:textSize="16sp"
-						android:layout_marginTop="8dp"
+						android:layout_marginTop="12dp"
 						tools:text="Pflanze wächst! 🌱" />
 				</LinearLayout>
 			</androidx.cardview.widget.CardView>
@@ -130,45 +130,45 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:padding="16dp">
+				android:padding="24dp">
 				
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/history_title"
-					android:textColor="@color/onBeige"
-					android:textSize="24sp"
+					android:textColor="#2C3E50"
+					android:textSize="28sp"
 					android:textStyle="bold"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginBottom="24dp"/>
+					android:layout_marginBottom="32dp"/>
 					
 				<TextView
 					android:id="@+id/textHistoryToday"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/history_today"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
 					android:textStyle="bold"
-					android:layout_marginBottom="8dp"/>
+					android:layout_marginBottom="16dp"/>
 					
 				<TextView
 					android:id="@+id/textHistoryYesterday"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/history_yesterday"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="8dp"/>
+					android:layout_marginBottom="16dp"/>
 					
 				<TextView
 					android:id="@+id/textHistoryWeek"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/history_this_week"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="8dp"/>
+					android:layout_marginBottom="16dp"/>
 			</LinearLayout>
 		</ScrollView>
 
@@ -182,53 +182,53 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:padding="16dp">
+				android:padding="24dp">
 				
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/scoreboard_title"
-					android:textColor="@color/onBeige"
-					android:textSize="24sp"
+					android:textColor="#2C3E50"
+					android:textSize="28sp"
 					android:textStyle="bold"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginBottom="24dp"/>
+					android:layout_marginBottom="32dp"/>
 					
 				<TextView
 					android:id="@+id/textScoreboardPoints"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/scoreboard_points"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="16dp"/>
+					android:layout_marginBottom="20dp"/>
 					
 				<TextView
 					android:id="@+id/textScoreboardStreak"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/scoreboard_streak"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="16dp"/>
+					android:layout_marginBottom="20dp"/>
 					
 				<TextView
 					android:id="@+id/textScoreboardBestDay"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/scoreboard_best_day"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="16dp"/>
+					android:layout_marginBottom="20dp"/>
 					
 				<TextView
 					android:id="@+id/textScoreboardTotal"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:text="@string/scoreboard_total_drunk"
-					android:textColor="@color/onBeige"
+					android:textColor="#2C3E50"
 					android:textSize="18sp"
-					android:layout_marginBottom="16dp"/>
+					android:layout_marginBottom="20dp"/>
 			</LinearLayout>
 		</ScrollView>
 
@@ -242,57 +242,60 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
-				android:padding="16dp">
+				android:padding="24dp">
 				
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/settings_title"
-					android:textColor="@color/onBeige"
-					android:textSize="24sp"
+					android:textColor="#2C3E50"
+					android:textSize="28sp"
 					android:textStyle="bold"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginBottom="24dp"/>
+					android:layout_marginBottom="32dp"/>
 					
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/daily_goal_setting"
-					android:textColor="@color/onBeige"
-					android:textSize="16sp"
-					android:layout_marginBottom="8dp"/>
+					android:textColor="#2C3E50"
+					android:textSize="18sp"
+					android:layout_marginBottom="12dp"/>
 					
 				<SeekBar
 					android:id="@+id/seekBarDailyGoal"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="16dp"
-					android:max="3000"
-					android:progress="2000"/>
+					android:layout_marginBottom="20dp"
+					android:max="40"
+					android:progress="10"
+					android:progressTint="#3498DB"
+					android:thumbTint="#3498DB"/>
 					
 				<TextView
 					android:id="@+id/textDailyGoalValue"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="2000 ml"
-					android:textColor="@color/onBeige"
-					android:textSize="14sp"
+					android:textColor="#3498DB"
+					android:textSize="16sp"
+					android:textStyle="bold"
 					android:layout_gravity="center_horizontal"
-					android:layout_marginBottom="24dp"/>
+					android:layout_marginBottom="32dp"/>
 					
 				<TextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/notifications_setting"
-					android:textColor="@color/onBeige"
-					android:textSize="16sp"
-					android:layout_marginBottom="8dp"/>
+					android:textColor="#2C3E50"
+					android:textSize="18sp"
+					android:layout_marginBottom="12dp"/>
 					
 				<Switch
 					android:id="@+id/switchNotifications"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginBottom="16dp"
+					android:layout_marginBottom="20dp"
 					android:checked="true"/>
 					
 				<TextView
@@ -300,37 +303,37 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/notifications_enabled"
-					android:textColor="@color/onBeige"
-					android:textSize="14sp"
+					android:textColor="#7F8C8D"
+					android:textSize="16sp"
 					android:layout_gravity="center_horizontal"/>
 			</LinearLayout>
 		</ScrollView>
 
 	</FrameLayout>
 
-	<!-- Floating Action Button with improved design -->
+	<!-- Professional Floating Action Button -->
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
 		android:id="@+id/fabBucket"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal|bottom"
 		android:layout_marginBottom="80dp"
-		app:backgroundTint="@color/onBeige"
-		app:tint="@color/beigeBackground"
+		app:backgroundTint="#3498DB"
+		app:tint="#FFFFFF"
 		app:srcCompat="@drawable/ic_bucket"
-		app:elevation="8dp"
+		app:elevation="12dp"
 		app:fabSize="normal" />
 
-	<!-- Bottom Navigation with improved design -->
+	<!-- Professional Bottom Navigation -->
 	<com.google.android.material.bottomnavigation.BottomNavigationView
 		android:id="@+id/bottomNav"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
 		app:menu="@menu/menu_bottom_nav"
-		app:itemIconTint="@color/onBeige"
-		app:itemTextColor="@color/onBeige"
-		android:background="@color/beigeBackground"
-		app:elevation="8dp" />
+		app:itemIconTint="#3498DB"
+		app:itemTextColor="#3498DB"
+		android:background="#FFFFFF"
+		app:elevation="12dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
