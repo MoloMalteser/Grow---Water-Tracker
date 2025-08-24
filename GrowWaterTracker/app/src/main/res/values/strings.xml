@@ -25,4 +25,37 @@
 	<string name="nav_history">Verlauf</string>
 	<string name="nav_scoreboard">Scoreboard</string>
 	<string name="nav_settings">Settings</string>
+	
+	<!-- New strings for enhanced features -->
+	<string name="plant_height">%1$d cm</string>
+	<string name="plant_height_label">Pflanzenhöhe</string>
+	<string name="settings_title">Einstellungen</string>
+	<string name="daily_goal_setting">Tagesziel (ml)</string>
+	<string name="glass_size_setting">Glasgröße (ml)</string>
+	<string name="notifications_setting">Benachrichtigungen</string>
+	<string name="notifications_enabled">Benachrichtigungen aktiviert</string>
+	<string name="notifications_disabled">Benachrichtigungen deaktiviert</string>
+	<string name="goal_warning_title">Warnung</string>
+	<string name="goal_warning_message">3 Liter pro Tag ist bereits viel und wird nicht empfohlen. Trotzdem fortfahren?</string>
+	<string name="goal_warning_continue">Fortfahren</string>
+	<string name="goal_warning_cancel">Abbrechen</string>
+	<string name="goal_max_exceeded">Das Maximum von 3 Litern wurde überschritten!</string>
+	<string name="goal_min_not_reached">Das Tagesziel wurde nicht erreicht!</string>
+	<string name="goal_achieved">Tagesziel erreicht! 🎉</string>
+	<string name="plant_growing">Pflanze wächst! 🌱</string>
+	<string name="plant_dying">Pflanze stirbt! 💀</string>
+	<string name="scoreboard_title">Scoreboard</string>
+	<string name="scoreboard_points">Punkte: %1$d</string>
+	<string name="scoreboard_streak">Streak: %1$d Tage</string>
+	<string name="scoreboard_best_day">Bester Tag: %1$d ml</string>
+	<string name="scoreboard_total_drunk">Gesamt getrunken: %1$d L</string>
+	<string name="history_title">Verlauf</string>
+	<string name="history_today">Heute</string>
+	<string name="history_yesterday">Gestern</string>
+	<string name="history_this_week">Diese Woche</string>
+	<string name="history_no_data">Noch keine Daten</string>
+	<string name="notification_title">Zeit zu trinken! 💧</string>
+	<string name="notification_message">Du hast noch %1$d ml bis zum Tagesziel</string>
+	<string name="notification_channel_name">Wasser-Erinnerungen</string>
+	<string name="notification_channel_description">Erinnerungen zum Wassertrinken</string>
 </resources>
