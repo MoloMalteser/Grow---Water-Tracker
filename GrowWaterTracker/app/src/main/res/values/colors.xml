@@ -3,12 +3,12 @@
 	<color name="seedling">#A5D6A7</color>
 	<color name="small">#81C784</color>
 	<color name="medium">#66BB6A</color>
-	<color name="large">#43A047</color>
+	<color name="large">#2E7D32</color>
 	<color name="dead">#9E9E9E</color>
 
+	<color name="beigeBackground">#F5F0E6</color>
+	<color name="onBeige">#111111</color>
+	<color name="accentGreen">#2E7D32</color>
+	<color name="accentGreenLight">#43A047</color>
 	<color name="cardBackground">#FFFFFF</color>
-	<color name="onCard">#222222</color>
-	<color name="colorPrimary">#2E7D32</color>
-	<color name="colorOnPrimary">#FFFFFF</color>
-	<color name="colorBackground">#FAFAFA</color>
 </resources>

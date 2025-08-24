@@ -1,0 +1,113 @@
+name: Maintenance - Auto Merge and Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Target branch to push to (ours kept on conflicts)"
+        required: true
+        default: "cursor/android-water-tracker-app-with-plant-growth-080c"
+      base:
+        description: "Base branch to merge from"
+        required: true
+        default: "main"
+      tag:
+        description: "Tag to create (leave empty to auto bump patch)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  merge_and_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.email "bot@example.com"
+          git config user.name "Grow Bot"
+
+      - name: Fetch and checkout branch
+        run: |
+          git fetch --all --tags --prune
+          git checkout "${{ inputs.branch }}"
+          git pull --ff-only || true
+
+      - name: Merge base into branch (may create conflicts)
+        run: |
+          set -e
+          git fetch origin "${{ inputs.base }}"
+          git merge --no-edit "origin/${{ inputs.base }}" || true
+
+      - name: Resolve known conflicts by keeping OURS
+        shell: bash
+        run: |
+          set -e
+          files=(
+            ".github/workflows/android-release.yml"
+            "GrowWaterTracker/settings.gradle.kts"
+            "GrowWaterTracker/app/build.gradle.kts"
+            "GrowWaterTracker/app/src/main/AndroidManifest.xml"
+            "GrowWaterTracker/app/src/main/java/com/example/growwatertracker/MainActivity.kt"
+            "GrowWaterTracker/app/src/main/res/layout/activity_main.xml"
+            "GrowWaterTracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
+            "GrowWaterTracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
+            "GrowWaterTracker/app/src/main/res/values/colors.xml"
+            "GrowWaterTracker/app/src/main/res/values/strings.xml"
+            "GrowWaterTracker/app/src/main/res/values/themes.xml"
+          )
+          changed=false
+          for f in "${files[@]}"; do
+            if git ls-files -u -- "$f" | grep -q .; then
+              echo "Resolving $f (ours)"
+              git checkout --ours -- "$f"
+              git add -- "$f"
+              changed=true
+            fi
+          done
+          if $changed; then
+            git commit -m "Resolve conflicts: keep branch versions"
+          else
+            echo "No listed conflicts to resolve"
+          fi
+          # Fail if any conflict markers remain anywhere
+          if git grep -n "^<<<<<<< " -- . >/dev/null 2>&1; then
+            echo "Unresolved conflict markers remain" >&2
+            git grep -n "^<<<<<<< " -- . || true
+            exit 1
+          fi
+
+      - name: Push branch
+        run: |
+          git push origin "${{ inputs.branch }}"
+
+      - name: Create or compute tag
+        id: tagging
+        run: |
+          set -e
+          desired_tag="${{ inputs.tag }}"
+          if [ -z "$desired_tag" ]; then
+            last=$(git tag -l 'v[0-9]*.[0-9]*.[0-9]*' | sort -V | tail -n1)
+            if [ -z "$last" ]; then
+              desired_tag="v1.0.0"
+            else
+              ver=${last#v}; IFS='.' read -r a b c <<<"$ver"; c=$((c+1)); desired_tag="v${a}.${b}.${c}"
+            fi
+          fi
+          echo "TAG=$desired_tag" >> "$GITHUB_OUTPUT"
+          git tag -a "$desired_tag" -m "Release $desired_tag" || true
+
+      - name: Push tag
+        run: |
+          git push origin "${{ steps.tagging.outputs.TAG }}"
+
+      - name: Summary
+        run: |
+          echo "Pushed branch: ${{ inputs.branch }}" >> $GITHUB_STEP_SUMMARY
+          echo "Tag: ${{ steps.tagging.outputs.TAG }}" >> $GITHUB_STEP_SUMMARY

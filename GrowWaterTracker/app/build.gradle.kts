@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-	namespace = "com.example.growwatertracker"
+	namespace = "com.nostudios.grow"
 	compileSdk = 34
 
 	defaultConfig {
-		applicationId = "com.example.growwatertracker"
+		applicationId = "com.nostudios.grow"
 		minSdk = 24
 		targetSdk = 34
 		versionCode = 1
