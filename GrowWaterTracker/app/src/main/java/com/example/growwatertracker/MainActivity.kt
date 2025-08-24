@@ -1,22 +1,39 @@
 package com.nostudios.grow
 
-import android.animation.ObjectAnimator
+import android.Manifest
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.SeekBar
+import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.slider.Slider
 import com.google.android.material.button.MaterialButton
 import com.nostudios.grow.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 	private lateinit var binding: ActivityMainBinding
 	private val prefs by lazy { getSharedPreferences("grow_prefs", MODE_PRIVATE) }
+	private lateinit var notificationManager: NotificationManager
+	private lateinit var alarmManager: AlarmManager
 
 	private var dailyGoalMl: Int = 2000
 	private var glassTargetMl: Int = 250
@@ -26,14 +43,25 @@ class MainActivity : AppCompatActivity() {
 	private var points: Int = 0
 	private var stage: Int = 0
 	private var streakDays: Int = 0
+	private var plantHeightCm: Int = 5
+	private var bestDayMl: Int = 0
+	private var totalDrunkL: Int = 0
+	private var notificationsEnabled: Boolean = true
+	private var isFirstLaunch: Boolean = true
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 
+		notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+		alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+		createNotificationChannel()
+		checkFirstLaunch()
 		maybeResetForNewDay()
 		loadState()
+		setupSettingsListeners()
 		updateUi()
 
 		binding.fabBucket.setOnClickListener { showDrinkSheet() }
@@ -48,6 +76,25 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun checkFirstLaunch() {
+		isFirstLaunch = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+		if (isFirstLaunch) {
+			showGoalSetupDialog()
+		}
+	}
+
+	private fun showGoalSetupDialog() {
+		val dialog = AlertDialog.Builder(this)
+			.setTitle("Willkommen bei Grow! 🌱")
+			.setMessage("Wie viel Wasser möchtest du täglich trinken? (Empfohlen: 2-2.5 Liter)")
+			.setPositiveButton("Bestätigen") { _, _ ->
+				isFirstLaunch = false
+				prefs.edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
+			}
+			.create()
+		dialog.show()
+	}
+
 	private fun showDrinkSheet() {
 		val dialog = BottomSheetDialog(this)
 		val view = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_drink, null, false)
@@ -55,48 +102,132 @@ class MainActivity : AppCompatActivity() {
 		val textAmount = view.findViewById<TextView>(R.id.textAmount)
 		val buttonAdd = view.findViewById<MaterialButton>(R.id.buttonAdd)
 		val animView = view.findViewById<android.widget.ImageView>(R.id.sheetVisual)
+		
 		(animView.drawable as? android.graphics.drawable.AnimationDrawable)?.start()
 		slider.valueFrom = 50f
 		slider.valueTo = 1000f
 		slider.stepSize = 50f
 		textAmount.text = getString(R.string.sheet_amount, slider.value.toInt())
+		
 		slider.addOnChangeListener { _, value, _ ->
 			textAmount.text = getString(R.string.sheet_amount, value.toInt())
 		}
+		
 		buttonAdd.setOnClickListener {
 			applyDrink(slider.value.toInt())
 			dialog.dismiss()
 		}
+		
 		dialog.setContentView(view)
 		dialog.show()
 	}
 
 	private fun applyDrink(ml: Int) {
 		consumedMl += ml
-		val lower = (glassTargetMl * (1.0 - tolerance)).toInt()
-		val upper = (glassTargetMl * (1.0 + tolerance)).toInt()
-		val within = ml in lower..upper
-		if (within) {
-			points += 10
-			if (stage >= 0 && stage < 3) stage += 1
-			animatePlant(true)
+		
+		// Check if exceeding 3L limit
+		if (consumedMl > 3000) {
+			Toast.makeText(this, R.string.goal_max_exceeded, Toast.LENGTH_LONG).show()
+			stage = -1 // Plant dies
+			plantHeightCm = 0
 		} else {
-			points -= 5
-			if (stage > 0) {
-				stage -= 1
-				animatePlant(false)
+			// Plant only grows when goal is reached
+			if (consumedMl >= dailyGoalMl) {
+				if (stage >= 0 && stage < 3) {
+					stage += 1
+					plantHeightCm += 10
+					Toast.makeText(this, R.string.plant_growing, Toast.LENGTH_SHORT).show()
+				}
+				points += 10
 			} else {
-				stage = -1
+				// Plant dies if goal not reached
+				if (stage > 0) {
+					stage -= 1
+					plantHeightCm = maxOf(0, plantHeightCm - 5)
+					Toast.makeText(this, R.string.plant_dying, Toast.LENGTH_SHORT).show()
+				} else if (stage == 0) {
+					stage = -1
+					plantHeightCm = 0
+				}
+				points -= 5
 			}
 		}
+		
+		// Update best day and total
+		if (consumedMl > bestDayMl) {
+			bestDayMl = consumedMl
+		}
+		totalDrunkL += ml
+		
 		saveState()
 		updateUi()
+		updateScoreboard()
+		updateHistory()
 	}
 
-	private fun animatePlant(grow: Boolean) {
-		val scaleFrom = if (grow) 0.95f else 1.05f
-		ObjectAnimator.ofFloat(binding.imagePlant, "scaleX", scaleFrom, 1f).apply { duration = 250; start() }
-		ObjectAnimator.ofFloat(binding.imagePlant, "scaleY", scaleFrom, 1f).apply { duration = 250; start() }
+	private fun setupSettingsListeners() {
+		binding.seekBarDailyGoal.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+				if (fromUser) {
+					dailyGoalMl = progress
+					binding.textDailyGoalValue.text = "$progress ml"
+					
+					// Show warning for 3L
+					if (progress >= 3000) {
+						showGoalWarningDialog()
+					}
+				}
+			}
+			override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+			override fun onStopTrackingTouch(seekBar: SeekBar?) {
+				saveState()
+			}
+		})
+
+		binding.seekBarGlassSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+			override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+				if (fromUser) {
+					glassTargetMl = progress
+					binding.textGlassSizeValue.text = "$progress ml"
+				}
+			}
+			override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+			override fun onStopTrackingTouch(seekBar: SeekBar?) {
+				saveState()
+			}
+		})
+
+		binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
+			notificationsEnabled = isChecked
+			binding.textNotificationStatus.text = if (isChecked) {
+				getString(R.string.notifications_enabled)
+			} else {
+				getString(R.string.notifications_disabled)
+			}
+			
+			if (isChecked) {
+				scheduleNotifications()
+			} else {
+				cancelNotifications()
+			}
+			saveState()
+		}
+	}
+
+	private fun showGoalWarningDialog() {
+		AlertDialog.Builder(this)
+			.setTitle(R.string.goal_warning_title)
+			.setMessage(R.string.goal_warning_message)
+			.setPositiveButton(R.string.goal_warning_continue) { _, _ ->
+				// User confirmed, continue with 3L goal
+			}
+			.setNegativeButton(R.string.goal_warning_cancel) { _, _ ->
+				// Reset to 2.5L
+				dailyGoalMl = 2500
+				binding.seekBarDailyGoal.progress = dailyGoalMl
+				binding.textDailyGoalValue.text = "$dailyGoalMl ml"
+			}
+			.show()
 	}
 
 	private fun showSection(visibleId: Int) {
@@ -111,6 +242,31 @@ class MainActivity : AppCompatActivity() {
 		binding.textTopGoal.text = getString(R.string.top_goal, dailyGoalMl)
 		binding.textTopStreak.text = getString(R.string.top_streak, streakDays)
 		binding.imagePlant.setImageResource(drawableForStage(stage))
+		binding.textPlantHeight.text = getString(R.string.plant_height, plantHeightCm)
+		
+		// Update plant status
+		binding.textPlantStatus.text = when {
+			stage == -1 -> getString(R.string.plant_dying)
+			consumedMl >= dailyGoalMl -> getString(R.string.plant_growing)
+			else -> "Ziel: ${dailyGoalMl - consumedMl} ml verbleibend"
+		}
+	}
+
+	private fun updateScoreboard() {
+		binding.textScoreboardPoints.text = getString(R.string.scoreboard_points, points)
+		binding.textScoreboardStreak.text = getString(R.string.scoreboard_streak, streakDays)
+		binding.textScoreboardBestDay.text = getString(R.string.scoreboard_best_day, bestDayMl)
+		binding.textScoreboardTotal.text = getString(R.string.scoreboard_total_drunk, totalDrunkL / 1000)
+	}
+
+	private fun updateHistory() {
+		val today = currentDateKey()
+		val yesterday = getYesterdayDate()
+		val weekStart = getWeekStartDate()
+		
+		binding.textHistoryToday.text = "${getString(R.string.history_today)}: $consumedMl ml"
+		binding.textHistoryYesterday.text = "${getString(R.string.history_yesterday)}: ${prefs.getInt("history_$yesterday", 0)} ml"
+		binding.textHistoryWeek.text = "${getString(R.string.history_this_week)}: ${getWeekTotal(weekStart)} ml"
 	}
 
 	private fun drawableForStage(stage: Int): Int = when (stage) {
@@ -124,22 +280,72 @@ class MainActivity : AppCompatActivity() {
 	private fun maybeResetForNewDay() {
 		val today = currentDateKey()
 		val lastDay = prefs.getString(KEY_DATE, null)
+		
 		if (lastDay == null) {
 			prefs.edit().putString(KEY_DATE, today).apply()
 			return
 		}
+		
 		if (lastDay != today) {
+			// Save yesterday's data
+			prefs.edit().putInt("history_$lastDay", consumedMl).apply()
+			
 			if (consumedMl >= dailyGoalMl) {
 				streakDays += 1
 			} else {
 				streakDays = 0
 			}
+			
 			consumedMl = 0
 			points = 0
 			stage = 0
+			plantHeightCm = 5
 			prefs.edit().putString(KEY_DATE, today).apply()
 			saveState()
 		}
+	}
+
+	private fun createNotificationChannel() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			val channel = NotificationChannel(
+				CHANNEL_ID,
+				getString(R.string.notification_channel_name),
+				NotificationManager.IMPORTANCE_DEFAULT
+			).apply {
+				description = getString(R.string.notification_channel_description)
+			}
+			notificationManager.createNotificationChannel(channel)
+		}
+	}
+
+	private fun scheduleNotifications() {
+		if (!notificationsEnabled) return
+		
+		val intent = Intent(this, NotificationReceiver::class.java)
+		val pendingIntent = PendingIntent.getBroadcast(
+			this, 0, intent,
+			PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+		)
+
+		// Schedule notifications every 3 hours
+		val calendar = Calendar.getInstance()
+		calendar.add(Calendar.HOUR, 3)
+		
+		alarmManager.setRepeating(
+			AlarmManager.RTC_WAKEUP,
+			calendar.timeInMillis,
+			AlarmManager.INTERVAL_HOUR * 3,
+			pendingIntent
+		)
+	}
+
+	private fun cancelNotifications() {
+		val intent = Intent(this, NotificationReceiver::class.java)
+		val pendingIntent = PendingIntent.getBroadcast(
+			this, 0, intent,
+			PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+		)
+		alarmManager.cancel(pendingIntent)
 	}
 
 	private fun saveState() {
@@ -150,6 +356,10 @@ class MainActivity : AppCompatActivity() {
 			.putInt(KEY_GOAL, dailyGoalMl)
 			.putInt(KEY_GLASS, glassTargetMl)
 			.putInt(KEY_STREAK, streakDays)
+			.putInt(KEY_PLANT_HEIGHT, plantHeightCm)
+			.putInt(KEY_BEST_DAY, bestDayMl)
+			.putInt(KEY_TOTAL_DRUNK, totalDrunkL)
+			.putBoolean(KEY_NOTIFICATIONS, notificationsEnabled)
 			.apply()
 	}
 
@@ -160,6 +370,22 @@ class MainActivity : AppCompatActivity() {
 		points = prefs.getInt(KEY_POINTS, 0)
 		stage = prefs.getInt(KEY_STAGE, 0)
 		streakDays = prefs.getInt(KEY_STREAK, 0)
+		plantHeightCm = prefs.getInt(KEY_PLANT_HEIGHT, 5)
+		bestDayMl = prefs.getInt(KEY_BEST_DAY, 0)
+		totalDrunkL = prefs.getInt(KEY_TOTAL_DRUNK, 0)
+		notificationsEnabled = prefs.getBoolean(KEY_NOTIFICATIONS, true)
+		
+		// Update UI elements
+		binding.seekBarDailyGoal.progress = dailyGoalMl
+		binding.seekBarGlassSize.progress = glassTargetMl
+		binding.switchNotifications.isChecked = notificationsEnabled
+		binding.textDailyGoalValue.text = "$dailyGoalMl ml"
+		binding.textGlassSizeValue.text = "$glassTargetMl ml"
+		binding.textNotificationStatus.text = if (notificationsEnabled) {
+			getString(R.string.notifications_enabled)
+		} else {
+			getString(R.string.notifications_disabled)
+		}
 	}
 
 	private fun currentDateKey(): String {
@@ -170,6 +396,29 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun getYesterdayDate(): String {
+		val calendar = Calendar.getInstance()
+		calendar.add(Calendar.DAY_OF_YEAR, -1)
+		return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+	}
+
+	private fun getWeekStartDate(): String {
+		val calendar = Calendar.getInstance()
+		calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+		return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+	}
+
+	private fun getWeekTotal(weekStart: String): Int {
+		var total = 0
+		val calendar = Calendar.getInstance()
+		repeat(7) {
+			val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+			total += prefs.getInt("history_$date", 0)
+			calendar.add(Calendar.DAY_OF_YEAR, 1)
+		}
+		return total
+	}
+
 	companion object {
 		private const val KEY_DATE = "key_date"
 		private const val KEY_CONSUMED = "key_consumed"
@@ -178,5 +427,38 @@ class MainActivity : AppCompatActivity() {
 		private const val KEY_GOAL = "key_goal"
 		private const val KEY_GLASS = "key_glass"
 		private const val KEY_STREAK = "key_streak"
+		private const val KEY_PLANT_HEIGHT = "key_plant_height"
+		private const val KEY_BEST_DAY = "key_best_day"
+		private const val KEY_TOTAL_DRUNK = "key_total_drunk"
+		private const val KEY_NOTIFICATIONS = "key_notifications"
+		private const val KEY_FIRST_LAUNCH = "key_first_launch"
+		private const val CHANNEL_ID = "grow_water_reminders"
+	}
+}
+
+// Notification Receiver for scheduled notifications
+class NotificationReceiver : android.content.BroadcastReceiver() {
+	override fun onReceive(context: Context, intent: Intent) {
+		val prefs = context.getSharedPreferences("grow_prefs", Context.MODE_PRIVATE)
+		val consumedMl = prefs.getInt("key_consumed", 0)
+		val dailyGoalMl = prefs.getInt("key_goal", 2000)
+		val notificationsEnabled = prefs.getBoolean("key_notifications", true)
+		
+		if (!notificationsEnabled) return
+		
+		val remainingMl = dailyGoalMl - consumedMl
+		if (remainingMl > 0) {
+			val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+			
+			val notification = NotificationCompat.Builder(context, "grow_water_reminders")
+				.setContentTitle(context.getString(R.string.notification_title))
+				.setContentText(context.getString(R.string.notification_message, remainingMl))
+				.setSmallIcon(android.R.drawable.ic_dialog_info)
+				.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+				.setAutoCancel(true)
+				.build()
+			
+			notificationManager.notify(1, notification)
+		}
 	}
 }

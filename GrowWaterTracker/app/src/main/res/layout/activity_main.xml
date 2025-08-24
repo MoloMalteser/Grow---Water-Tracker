@@ -71,52 +71,242 @@
 				android:scaleType="fitCenter"
 				android:src="@drawable/plant_seedling"
 				android:adjustViewBounds="true" />
+				
+			<TextView
+				android:id="@+id/textPlantHeight"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:textColor="@color/onBeige"
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:text="@string/plant_height"
+				android:layout_marginTop="8dp" />
+				
+			<TextView
+				android:id="@+id/textPlantStatus"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:textColor="@color/onBeige"
+				android:textSize="14sp"
+				android:layout_marginTop="4dp"
+				tools:text="Pflanze wächst! 🌱" />
 		</LinearLayout>
 
-		<LinearLayout
+		<ScrollView
 			android:id="@+id/historyContainer"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:gravity="center"
-			android:orientation="vertical"
 			android:visibility="gone">
-			<TextView
-				android:layout_width="wrap_content"
+			
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textColor="@color/onBeige"
-				android:textSize="18sp"
-				android:text="Verlauf kommt bald"/>
-		</LinearLayout>
+				android:orientation="vertical"
+				android:padding="16dp">
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/history_title"
+					android:textColor="@color/onBeige"
+					android:textSize="24sp"
+					android:textStyle="bold"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:id="@+id/textHistoryToday"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/history_today"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:layout_marginBottom="8dp"/>
+					
+				<TextView
+					android:id="@+id/textHistoryYesterday"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/history_yesterday"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:layout_marginBottom="8dp"/>
+					
+				<TextView
+					android:id="@+id/textHistoryWeek"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/history_this_week"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:textStyle="bold"
+					android:layout_marginBottom="8dp"/>
+			</LinearLayout>
+		</ScrollView>
 
-		<LinearLayout
+		<ScrollView
 			android:id="@+id/scoreboardContainer"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:gravity="center"
-			android:orientation="vertical"
 			android:visibility="gone">
-			<TextView
-				android:layout_width="wrap_content"
+			
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textColor="@color/onBeige"
-				android:textSize="18sp"
-				android:text="Scoreboard kommt bald"/>
-		</LinearLayout>
+				android:orientation="vertical"
+				android:padding="16dp">
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/scoreboard_title"
+					android:textColor="@color/onBeige"
+					android:textSize="24sp"
+					android:textStyle="bold"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:id="@+id/textScoreboardPoints"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/scoreboard_points"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:layout_marginBottom="16dp"/>
+					
+				<TextView
+					android:id="@+id/textScoreboardStreak"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/scoreboard_streak"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:layout_marginBottom="16dp"/>
+					
+				<TextView
+					android:id="@+id/textScoreboardBestDay"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/scoreboard_best_day"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:layout_marginBottom="16dp"/>
+					
+				<TextView
+					android:id="@+id/textScoreboardTotal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/scoreboard_total_drunk"
+					android:textColor="@color/onBeige"
+					android:textSize="18sp"
+					android:layout_marginBottom="16dp"/>
+			</LinearLayout>
+		</ScrollView>
 
-		<LinearLayout
+		<ScrollView
 			android:id="@+id/settingsContainer"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:gravity="center"
-			android:orientation="vertical"
 			android:visibility="gone">
-			<TextView
-				android:layout_width="wrap_content"
+			
+			<LinearLayout
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textColor="@color/onBeige"
-				android:textSize="18sp"
-				android:text="Einstellungen kommen bald"/>
-		</LinearLayout>
+				android:orientation="vertical"
+				android:padding="16dp">
+				
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/settings_title"
+					android:textColor="@color/onBeige"
+					android:textSize="24sp"
+					android:textStyle="bold"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/daily_goal_setting"
+					android:textColor="@color/onBeige"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"/>
+					
+				<SeekBar
+					android:id="@+id/seekBarDailyGoal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="16dp"
+					android:max="3000"
+					android:progress="2000"/>
+					
+				<TextView
+					android:id="@+id/textDailyGoalValue"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="2000 ml"
+					android:textColor="@color/onBeige"
+					android:textSize="14sp"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/glass_size_setting"
+					android:textColor="@color/onBeige"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"/>
+					
+				<SeekBar
+					android:id="@+id/seekBarGlassSize"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="16dp"
+					android:max="500"
+					android:progress="250"/>
+					
+				<TextView
+					android:id="@+id/textGlassSizeValue"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="250 ml"
+					android:textColor="@color/onBeige"
+					android:textSize="14sp"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="24dp"/>
+					
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/notifications_setting"
+					android:textColor="@color/onBeige"
+					android:textSize="16sp"
+					android:layout_marginBottom="8dp"/>
+					
+				<Switch
+					android:id="@+id/switchNotifications"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="16dp"
+					android:checked="true"/>
+					
+				<TextView
+					android:id="@+id/textNotificationStatus"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/notifications_enabled"
+					android:textColor="@color/onBeige"
+					android:textSize="14sp"
+					android:layout_gravity="center_horizontal"/>
+			</LinearLayout>
+		</ScrollView>
 
 	</FrameLayout>
 

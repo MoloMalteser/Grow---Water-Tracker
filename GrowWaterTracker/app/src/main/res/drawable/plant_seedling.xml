@@ -4,16 +4,43 @@
 	android:height="200dp"
 	android:viewportWidth="100"
 	android:viewportHeight="100">
+	
+	<!-- Soil -->
+	<path
+		android:fillColor="#8D6E63"
+		android:pathData="M20,90 L80,90 L80,100 L20,100 Z"/>
+	
+	<!-- Seed -->
+	<ellipse
+		android:fillColor="#5D4037"
+		android:cx="50"
+		android:cy="88"
+		android:rx="3"
+		android:ry="2"/>
+	
 	<!-- Stem -->
 	<path
 		android:fillColor="#4CAF50"
-		android:pathData="M48,60 L52,60 L52,85 L48,85 Z"/>
-	<!-- Left leaf -->
+		android:strokeColor="#388E3C"
+		android:strokeWidth="0.5"
+		android:pathData="M50,88 Q50,75 50,65"/>
+	
+	<!-- First leaves -->
 	<path
 		android:fillColor="#81C784"
-		android:pathData="M50,60 C35,55 35,45 50,42 C55,45 55,55 50,60 Z"/>
-	<!-- Right leaf -->
+		android:strokeColor="#4CAF50"
+		android:strokeWidth="0.3"
+		android:pathData="M50,70 Q40,65 35,70 Q40,75 50,70"/>
 	<path
 		android:fillColor="#81C784"
-		android:pathData="M50,60 C65,55 65,45 50,42 C45,45 45,55 50,60 Z"/>
+		android:strokeColor="#4CAF50"
+		android:strokeWidth="0.3"
+		android:pathData="M50,70 Q60,65 65,70 Q60,75 50,70"/>
+	
+	<!-- Center leaf -->
+	<path
+		android:fillColor="#66BB6A"
+		android:strokeColor="#4CAF50"
+		android:strokeWidth="0.3"
+		android:pathData="M50,68 Q50,60 50,68"/>
 </vector>
