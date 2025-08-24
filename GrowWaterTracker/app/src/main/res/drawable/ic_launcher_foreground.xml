@@ -4,6 +4,34 @@
 	android:height="108dp"
 	android:viewportWidth="108"
 	android:viewportHeight="108">
-	<path android:fillColor="#FFFFFF" android:pathData="M54,18 C78,20 90,40 88,62 C80,68 62,70 46,60 C32,52 30,38 34,30 C40,26 48,22 54,18 Z"/>
-	<path android:fillColor="#C8E6C9" android:pathData="M70,30 C72,44 60,58 44,64 L44,64 C54,50 62,40 70,30 Z"/>
+	
+	<!-- Background circle -->
+	<path
+		android:fillColor="#3498DB"
+		android:pathData="M54,54 A54,54 0 1,1 54,0 A54,54 0 1,1 54,54"/>
+	
+	<!-- Water drop -->
+	<path
+		android:fillColor="#FFFFFF"
+		android:pathData="M54,25 C54,25 45,35 45,45 C45,55 54,65 54,65 C54,65 63,55 63,45 C63,35 54,25 54,25 Z"/>
+	
+	<!-- Plant stem -->
+	<path
+		android:fillColor="#27AE60"
+		android:strokeColor="#229954"
+		android:strokeWidth="1"
+		android:pathData="M54,65 L54,75"/>
+	
+	<!-- Plant leaves -->
+	<path
+		android:fillColor="#2ECC71"
+		android:pathData="M54,70 Q45,65 54,70"/>
+	<path
+		android:fillColor="#2ECC71"
+		android:pathData="M54,70 Q63,65 54,70"/>
+	
+	<!-- Small leaf at top -->
+	<path
+		android:fillColor="#27AE60"
+		android:pathData="M54,68 Q54,65 54,68"/>
 </vector>
